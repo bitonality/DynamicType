@@ -17,6 +17,10 @@ jobs:
           uses: KyleMayes/install-llvm-action@v2
           with:
             version: "17.0"
+        - name: macOS Install LLVM and Clang
+          if: runner.os == 'macOS'
+          run: |
+            brew install llvm@17
         - name: Setup MSVC
           if: runner.os == 'Windows'
           uses: ilammy/msvc-dev-cmd@v1
