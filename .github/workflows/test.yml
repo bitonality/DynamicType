@@ -1,0 +1,37 @@
+name: Test Stuff
+on:
+    workflow_dispatch:
+jobs:
+    tests:
+      strategy:
+        matrix:
+          os: [ubuntu-latest, windows-latest, macos-latest]
+          mode: ['debug', 'release']
+      runs-on: ${{ matrix.os }}
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v4
+        - name: Linux Install LLVM and Clang
+          if: runner.os == 'Linux'
+          uses: KyleMayes/install-llvm-action@v2
+          with:
+            version: "17.0"
+        - name: macOS Install LLVM and Clang
+          if: runner.os == 'macOS'
+          uses: KyleMayes/install-llvm-action@v2
+          with:
+            version: "17.0"
+        - name: Setup MSVC
+          if: runner.os == 'Windows'
+          uses: ilammy/msvc-dev-cmd@v1
+        - name: Setup xmake
+          uses: xmake-io/github-action-setup-xmake@v1
+          with:
+             xmake-version: latest
+        - name: xmake config
+          run: |
+               xmake f -m "${{matrix.mode}}" -y
+               xmake build
+               xmake test
+        
+            
