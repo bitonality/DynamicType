@@ -19,7 +19,7 @@ jobs:
             version: "17.0"
         - name: macOS Install LLVM and Clang
           if: runner.os == 'macOS'
-          uses: KyleMayes/install-llvm-action@v2
+          uses: KyleMayes/install-llvm-action@v2.0.3
           with:
             version: "17.0"
             arch: "arm64"
